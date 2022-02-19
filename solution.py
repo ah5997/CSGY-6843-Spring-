@@ -44,12 +44,12 @@ def webServer(port=13331):
 
         # Close client socket
         # Fill in start
-        connectionSocket.send("\r\n".encode())
-        connectionSocket.close()
+                connectionSocket.send("\r\n".encode())
+                connectionSocket.close()
         # Fill in end
 
         except(ConnectionResetError, BrokenPipeError):
-        pass
+            pass
 
 serverSocket.close()
 sys.exit()  # Terminate the program after sending the corresponding data
