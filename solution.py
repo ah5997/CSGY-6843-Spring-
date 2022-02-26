@@ -1,59 +1,74 @@
-# import socket module
 from socket import *
-# In order to terminate the program
-import sys
 
 
-def webServer(port=13331):
-    serverSocket = socket(AF_INET, SOCK_STREAM)
-    # Prepare a server socket
-    serverSocket.bind(("", port))
+def smtp_client(port=1025, mailserver='127.0.0.1'):
+    msg = "\r\n My message"
+    endmsg = "\r\n.\r\n"
+
+    # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
+
+    # Create socket called clientSocket and establish a TCP connection with mailserver and port
+
     # Fill in start
-    serverSocket.listen(1)
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect((mailserver, port))
     # Fill in end
 
-    while True:
-        # Establish the connection
-        # print('Ready to serve...')
-        print('Ready to serve...')
-        connectionSocket, addr = serverSocket.accept() # Fill in start      #Fill in end
-        try:
+    recv = clientSocket.recv(1024).decode()
+    print(recv)
+    if recv[:3] != '220':
+        print('220 reply not received from server.')
 
-            try:
-                message =  connectionSocket.recv(1024).decode()# Fill in start    #Fill in end
-                filename = message.split()[1]
-                f = open(filename[1:])
-                outputdata = f.read() # Fill in start     #Fill in end
+    # Send HELO command and print server response.
+    heloCommand = 'HELO Alice\r\n'
+    clientSocket.send(heloCommand.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    if recv1[:3] != '250':
+        print('250 reply not received from server.')
 
-                # Send one HTTP header line into socket.
-                # Fill in start
-                connectionSocket.send("HTTP/1.1 200 OK \r\n\r\n".encode())
-                # Fill in end
+    # Send MAIL FROM command and print server response.
+    # Fill in start
+    mailfromCommand = 'MAIL FROM:<arzoofhussain@gmail.com>\r\n'
+    clientSocket.send(mailfromCommand.encode())
+    recv2 = clientSocket.recv(1024).decode()
+    # Fill in end
 
-                # Send the content of the requested file to the client
-                for i in range(0, len(outputdata)):
-                    connectionSocket.send(outputdata[i].encode())
+    # Send RCPT TO command and print server response.
+    # Fill in start
+    rcpttoCommand = 'RCPT TO:<ah5997@nyu.edu>\r\n'
+    clientSocket.send(rcpttoCommand.encode())
+    recv3 = clientSocket.recv(1024).decode()
+    # Fill in end
 
-                connectionSocket.send("\r\n".encode())
-                connectionSocket.close()
-            except IOError:
-        # Send response message for file not found (404)
-        # Fill in start
-                connectionSocket.send("HTTP/1.1 404 Not Found \r\n\r\n".encode())
-        # Fill in end
+    # Send DATA command and print server response.
+    # Fill in start
+    dataCommand = 'DATA\r\n'
+    clientSocket.send(dataCommand.encode())
+    recv4 = clientSocket.recv(1024).decode()
+    # Fill in end
 
-        # Close client socket
-        # Fill in start
-                connectionSocket.send("\r\n".encode())
-                connectionSocket.close()
-        # Fill in end
+    # Send message data.
+    # Fill in start
+    messagedata = msg
+    clientSocket.send(messagedata.encode())
+    recv5 = clientSocket.recv(1024).decode()
+    # Fill in end
 
-        except (ConnectionResetError, BrokenPipeError):
-            pass
+    # Message ends with a single period.
+    # Fill in start
+    mesageend = '\r\n.\r\n'
+    clientSocket.send(mesageend.encode())
+    recv6 = clientSocket.recv(1024).decode()
+    # Fill in end
 
-    serverSocket.close()
-    sys.exit()  # Terminate the program after sending the corresponding data
+    # Send QUIT command and get server response.
+    # Fill in start
+    quitCommand = 'QUIT'
+    clientSocket.send(quitCommand.encode())
+    recv7 = clientSocket.recv(1024).decode()
+    # Fill in end
 
 
-if __name__ == "__main__":
-    webServer(13331)
+if __name__ == '__main__':
+    smtp_client(1025, '127.0.0.1')
