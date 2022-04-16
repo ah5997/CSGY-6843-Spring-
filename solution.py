@@ -5,7 +5,8 @@ import struct
 import time
 import select
 import binascii
-import statistics
+from statistics import *
+#import statistics
 
 
 # Should use stdev
