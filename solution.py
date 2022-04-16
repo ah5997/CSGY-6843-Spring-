@@ -5,6 +5,8 @@ import struct
 import time
 import select
 import binascii
+import statistics
+
 
 # Should use stdev
 
@@ -119,7 +121,6 @@ def ping(host, timeout=1):
 
     delays = []
 
-
     # Send ping requests to a server separated by approximately one second
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
@@ -130,6 +131,11 @@ def ping(host, timeout=1):
         delays.append(delay)
 
     print(delay)
+
+    packet_min = min(delays)*1000
+    packet_avg = (sum(delays)/ len(delays))*1000
+    packet_max =max(delays)*1000
+    stdev_var = statistics.stdev(delays)
 
 
 
