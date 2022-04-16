@@ -56,10 +56,10 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         #unpack header
         #data= time
 
-        if ID == revId:
+        if type != 8 and ID == revId:
             bytesInDouble = struct.calcsize("d")
-            data = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
-            return timeReceived - data
+            requestType = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
+            return timeReceived - requestType
 
         print(ID)
 
