@@ -136,7 +136,8 @@ def ping(host, timeout=1):
     packet_min = min(delays)*1000
     packet_avg = (sum(delays)/ len(delays))*1000
     packet_max =max(delays)*1000
-    stdev_vars = delays * 1000
+    stdev_var = stdev(delays)
+    #stdev_vars = delays * 1000
     #stdev_var = statistics.stdev(delays)
 
 
