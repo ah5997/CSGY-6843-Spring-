@@ -47,6 +47,19 @@ def build_packet():
     # Append checksum to the header.
 
     # Don’t send the packet yet , just return the final packet in this function.
+
+
+
+
+
+
+
+
+
+
+
+
+
     #Fill in end
 
     # So the function ending should look like this
@@ -65,6 +78,8 @@ def get_route(hostname):
 
             #Fill in start
             # Make a raw socket named mySocket
+            icmp = getprotobyname("icmp")
+            mySocket = socket(AF_INET, SOCK_RAW, icmp)
             #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
@@ -80,6 +95,8 @@ def get_route(hostname):
                     tracelist1.append("* * * Request timed out.")
                     #Fill in start
                     #You should add the list above to your all traces list
+                    tracelist1.insert(0, str(ttl))
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
@@ -88,6 +105,8 @@ def get_route(hostname):
                     tracelist1.append("* * * Request timed out.")
                     #Fill in start
                     #You should add the list above to your all traces list
+                    tracelist1.insert(0, str(ttl))
+                    tracelist2.append(tracelist1)
                     #Fill in end
             except timeout:
                 continue
@@ -95,9 +114,12 @@ def get_route(hostname):
             else:
                 #Fill in start
                 #Fetch the icmp type from the IP packet
+                icmpHeader = recPacket[20:28]
+                types, code, myCheckSum, packetID, sequence  = struct.unpack('bbHHh', icmpHeader)
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
+
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
