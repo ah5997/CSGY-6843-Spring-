@@ -52,6 +52,14 @@ def build_packet():
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
     myChecksum = checksum(header + data)
+
+    if type != 8 and ID == revId:
+        bytesInDouble = struct.calcsize("d")
+        requestType = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
+        return timeReceived - requestType
+
+    print(ID)
+
     # Get the right checksum, and put in the header// append
     if sys.platform == 'darwin':
         # Convert 16-bit integers from host to network  byte order
@@ -59,6 +67,9 @@ def build_packet():
     else:
         myChecksum = htons(myChecksum)
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+
+
+
 
     #Fill in end
 
