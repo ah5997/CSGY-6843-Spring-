@@ -5,6 +5,7 @@ import struct
 import time
 import select
 import binascii
+import socket
 
 ICMP_ECHO_REQUEST = 8
 MAX_HOPS = 30
@@ -62,9 +63,6 @@ def build_packet():
         myChecksum = htons(myChecksum)
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
 
-
-
-
     #Fill in end
 
     # So the function ending should look like this
@@ -120,13 +118,13 @@ def get_route(hostname):
                 #Fill in start
                 #Fetch the icmp type from the IP packet
                 icmpHeader = recvPacket[20:28]
-                types, code, myCheckSum, packetID, sequence  = struct.unpack('bbHHh', icmpHeader)
+                types, code, myCheckSum, packetID, sequence = struct.unpack('bbHHh', icmpHeader)
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
-                   # destinationHost = gethostbyaddr(addr[0])[0]
-                   # hostName = str(destinationHost)
-                    host = gethostbyaddr(addr[0])[0]
+                    destinationHost = gethostbyaddr(addr[0])[0]
+                    host = str(destinationHost)
+                    #host = gethostbyaddr(addr[0])[0]
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
@@ -135,8 +133,7 @@ def get_route(hostname):
 
                 if types == 11:
                     bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 +
-                    bytes])[0]
+                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here
                     tracelist1 = [str(ttl), str((timeReceived - startedSelect) * 1000), str(addr[0]), str(host)]
