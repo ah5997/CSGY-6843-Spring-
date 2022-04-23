@@ -138,7 +138,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here
                     tracelist1 = [str(ttl), str((timeReceived - startedSelect) * 1000), str(addr[0]), str(host)]
-                    tracelist2 = append(tracelist1)
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
@@ -146,7 +146,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here
                     tracelist1 = [str(ttl), str((timeReceived - startedSelect) * 1000), str(addr[0]), str(host)]
-                    tracelist2 = append(tracelist1)
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
@@ -154,7 +154,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here and return your list if your destination IP is met
                     tracelist1 = [str(ttl), str((timeReceived - startedSelect) * 1000), str(addr[0]), str(host)]
-                    tracelist2 = append(tracelist1)
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 else:
                     #Fill in start
