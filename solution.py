@@ -47,18 +47,12 @@ def build_packet():
     # Append checksum to the header.
 
     # Don’t send the packet yet , just return the final packet in this function.
-
+    ID = os.getpid() & 0xFFFF
     myChecksum = 0
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
     myChecksum = checksum(header + data)
 
-    if type != 8 and ID == revId:
-        bytesInDouble = struct.calcsize("d")
-        requestType = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
-        return timeReceived - requestType
-
-    print(ID)
 
     # Get the right checksum, and put in the header// append
     if sys.platform == 'darwin':
